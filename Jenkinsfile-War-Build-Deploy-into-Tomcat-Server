@@ -1,0 +1,34 @@
+pipeline{
+    agent any 
+    tools
+    {
+        maven "maven"
+    }
+    stages{
+        stage("Code Checkout"){
+        steps{
+                git branch: 'main', url: "https://github.com/Cloud-Gen-DevOps-Projects/Cloud-Gen-Project.git"
+        }
+            }
+
+        stage("Building the War file"){
+            steps{
+                sh "mvn clean package"
+                }
+            post{
+                success{
+            echo " Archiving the Artifact"
+            archiveArtifacts artifacts: '**/target/*.war'
+                        }
+                }
+            }
+
+        stage("Deploy"){
+            steps{
+                deploy adapters: [tomcat9(credentialsId: '192.168.254.142-tomcat-admin-server-deploy', path: '', url: 'http://192.168.254.142:8080/')], contextPath: null, war: '**/*.war'
+
+            }
+        }
+    }
+    
+}
