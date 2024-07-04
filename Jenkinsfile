@@ -38,7 +38,7 @@ pipeline{
 	stage("Deploying war file into Tomcat Server"){
 		steps{
 		sshagent(['wardeploy']) {
-			sh "scp -o StrictHostKeyChecking=no webapp/target/cloudgen-registration-form.war root@192.168.254.153:/opt/tomcat/webapps"
+			sh "scp -o StrictHostKeyChecking=no webapp/target/cloudgen-registration-form.war root@192.168.121.140:/opt/tomcat/webapps"
    
 		}
 
